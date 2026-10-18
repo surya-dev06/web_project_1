@@ -1,4 +1,146 @@
-import { SEO } from '../components/SEO'
-import { Reveal } from '../components/Reveal'
-export function Privacy(){return <><SEO title="Privacy policy | Northstar Studio" description="How Northstar Studio handles information submitted through this website." path="/privacy"/><section className="page-hero section-wrap"><Reveal><p className="eyebrow">Legal / Privacy</p><h1>Privacy <em>policy.</em></h1><p className="hero-intro">Template for review. Last updated: October 18, 2026.</p></Reveal></section><article className="section-wrap legal-copy"><p>This template is a starting point, not legal advice. Adapt it to your real business, actual data practices, location, retention period, and applicable laws before publishing.</p><h2>Information we collect</h2><p>When you submit the contact form, we may collect your name, email address, company, selected service, message, consent record, and submission source URL.</p><h2>Why we use it</h2><p>We use submitted information to respond to enquiries, assess project fit, maintain business records, protect the website, and meet legal obligations where applicable.</p><h2>Service providers</h2><p>Contact submissions may be processed by Supabase. If enabled, Google Analytics may process usage events and device/browser information. Configure consent and analytics settings to match applicable privacy requirements.</p><h2>Retention and security</h2><p>Set a documented retention period and delete enquiries when they are no longer needed. Use least-privilege database access, strong account security, and appropriate backups. No internet service can guarantee absolute security.</p><h2>Your choices</h2><p>Depending on applicable law, you may have rights to access, correct, delete, or object to certain processing. Contact the business using the real contact details published on this site.</p><h2>Children and updates</h2><p>This website is intended for business enquiries, not children. We may update this policy as our practices change; publish the effective date when doing so.</p><h2>Contact</h2><p>Replace this paragraph with your legal business name, postal address, and privacy contact email before launch.</p></article></>}
-export function Terms(){return <><SEO title="Terms and conditions | Northstar Studio" description="Terms for use of the Northstar Studio website and enquiry form." path="/terms"/><section className="page-hero section-wrap"><Reveal><p className="eyebrow">Legal / Terms</p><h1>Terms &amp;<br/><em>conditions.</em></h1><p className="hero-intro">Template for review. Last updated: October 18, 2026.</p></Reveal></section><article className="section-wrap legal-copy"><p>This template is general information, not legal advice. Have the final terms reviewed for your jurisdiction and business model.</p><h2>Website information</h2><p>Website content is provided for general information. We aim to keep it accurate but do not warrant that all content is complete, current, or suitable for every purpose.</p><h2>Enquiries and engagements</h2><p>Submitting a contact form does not create a client relationship or guarantee availability, pricing, delivery dates, or project acceptance. Paid services require a separate written agreement.</p><h2>Intellectual property</h2><p>Unless stated otherwise, original website text, branding, and design elements are owned by or licensed to the operator. Do not reuse them without permission. Third-party images and marks remain subject to their own licenses.</p><h2>Acceptable use</h2><p>Do not misuse this website, attempt unauthorized access, submit unlawful content, or interfere with its operation.</p><h2>Third-party services</h2><p>Links and integrations may lead to third-party services with separate terms and privacy practices. We are not responsible for their independent content or availability.</p><h2>Liability and changes</h2><p>To the extent permitted by law, the operator disclaims implied warranties and indirect damages. Nothing here limits rights that cannot legally be excluded. Replace this clause with locally reviewed wording.</p><h2>Governing law and contact</h2><p>Insert your real legal entity, governing law, jurisdiction, and contact details before launch.</p></article></>}
+import { SEO } from "../components/SEO";
+import { Reveal } from "../components/Reveal";
+export function Privacy() {
+  return (
+    <>
+      <SEO
+        title="Privacy policy | surya Studio"
+        description="How surya Studio handles information submitted through this website."
+        path="/privacy"
+      />
+      <section className="page-hero section-wrap">
+        <Reveal>
+          <p className="eyebrow">Legal / Privacy</p>
+          <h1>
+            Privacy <em>policy.</em>
+          </h1>
+          <p className="hero-intro">
+            Template for review. Last updated: October 18, 2026.
+          </p>
+        </Reveal>
+      </section>
+      <article className="section-wrap legal-copy">
+        <p>
+          This template is a starting point, not legal advice. Adapt it to your
+          real business, actual data practices, location, retention period, and
+          applicable laws before publishing.
+        </p>
+        <h2>Information we collect</h2>
+        <p>
+          When you submit the contact form, we may collect your name, email
+          address, company, selected service, message, consent record, and
+          submission source URL.
+        </p>
+        <h2>Why we use it</h2>
+        <p>
+          We use submitted information to respond to enquiries, assess project
+          fit, maintain business records, protect the website, and meet legal
+          obligations where applicable.
+        </p>
+        <h2>Service providers</h2>
+        <p>
+          Contact submissions may be processed by Supabase. If enabled, Google
+          Analytics may process usage events and device/browser information.
+          Configure consent and analytics settings to match applicable privacy
+          requirements.
+        </p>
+        <h2>Retention and security</h2>
+        <p>
+          Set a documented retention period and delete enquiries when they are
+          no longer needed. Use least-privilege database access, strong account
+          security, and appropriate backups. No internet service can guarantee
+          absolute security.
+        </p>
+        <h2>Your choices</h2>
+        <p>
+          Depending on applicable law, you may have rights to access, correct,
+          delete, or object to certain processing. Contact the business using
+          the real contact details published on this site.
+        </p>
+        <h2>Children and updates</h2>
+        <p>
+          This website is intended for business enquiries, not children. We may
+          update this policy as our practices change; publish the effective date
+          when doing so.
+        </p>
+        <h2>Contact</h2>
+        <p>
+          Replace this paragraph with your legal business name, postal address,
+          and privacy contact email before launch.
+        </p>
+      </article>
+    </>
+  );
+}
+export function Terms() {
+  return (
+    <>
+      <SEO
+        title="Terms and conditions | surya Studio"
+        description="Terms for use of the surya Studio website and enquiry form."
+        path="/terms"
+      />
+      <section className="page-hero section-wrap">
+        <Reveal>
+          <p className="eyebrow">Legal / Terms</p>
+          <h1>
+            Terms &amp;
+            <br />
+            <em>conditions.</em>
+          </h1>
+          <p className="hero-intro">
+            Template for review. Last updated: October 18, 2026.
+          </p>
+        </Reveal>
+      </section>
+      <article className="section-wrap legal-copy">
+        <p>
+          This template is general information, not legal advice. Have the final
+          terms reviewed for your jurisdiction and business model.
+        </p>
+        <h2>Website information</h2>
+        <p>
+          Website content is provided for general information. We aim to keep it
+          accurate but do not warrant that all content is complete, current, or
+          suitable for every purpose.
+        </p>
+        <h2>Enquiries and engagements</h2>
+        <p>
+          Submitting a contact form does not create a client relationship or
+          guarantee availability, pricing, delivery dates, or project
+          acceptance. Paid services require a separate written agreement.
+        </p>
+        <h2>Intellectual property</h2>
+        <p>
+          Unless stated otherwise, original website text, branding, and design
+          elements are owned by or licensed to the operator. Do not reuse them
+          without permission. Third-party images and marks remain subject to
+          their own licenses.
+        </p>
+        <h2>Acceptable use</h2>
+        <p>
+          Do not misuse this website, attempt unauthorized access, submit
+          unlawful content, or interfere with its operation.
+        </p>
+        <h2>Third-party services</h2>
+        <p>
+          Links and integrations may lead to third-party services with separate
+          terms and privacy practices. We are not responsible for their
+          independent content or availability.
+        </p>
+        <h2>Liability and changes</h2>
+        <p>
+          To the extent permitted by law, the operator disclaims implied
+          warranties and indirect damages. Nothing here limits rights that
+          cannot legally be excluded. Replace this clause with locally reviewed
+          wording.
+        </p>
+        <h2>Governing law and contact</h2>
+        <p>
+          Insert your real legal entity, governing law, jurisdiction, and
+          contact details before launch.
+        </p>
+      </article>
+    </>
+  );
+}

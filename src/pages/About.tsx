@@ -1,5 +1,74 @@
-import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
-import { Reveal } from '../components/Reveal'
-import { SEO } from '../components/SEO'
-export default function About(){return <><SEO title="About | Northstar Studio" description="Meet the principles behind Northstar Studio: thoughtful strategy, distinctive design, and measurable delivery." path="/about"/><section className="page-hero section-wrap"><Reveal><p className="eyebrow">About / A little about us</p><h1>Less noise.<br/><em>More meaning.</em></h1><p className="hero-intro">Northstar Studio is a demo identity for a modern independent digital partner. Make it yours with your real story, team, values, and proof.</p></Reveal></section><section className="section-wrap about-layout"><Reveal><p className="eyebrow">What we believe</p><h2>Digital should feel<br/>human first.</h2></Reveal><Reveal><p className="large-copy">The best websites respect people’s time. They explain what matters, work beautifully on every screen, and make the next step feel natural.</p><p>We bring strategy, design, engineering, and measurement together so that a website is not simply a launch-day deliverable. It becomes a useful part of the business.</p></Reveal></section><section className="statement-section"><div className="section-wrap statement-inner"><p className="eyebrow">Our working principles</p><h2>Curiosity over assumptions.<br/><em>Craft over shortcuts.</em></h2><p className="large-copy">Be clear about what is real. Build for accessibility and speed. Measure outcomes. Keep learning after launch.</p></div></section><section className="final-cta section-wrap"><Reveal><h2>Ready to build something useful?</h2><Link to="/contact" className="button button-dark">Start a conversation <ArrowUpRight/></Link></Reveal></section></>}
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal } from "../components/Reveal";
+import { SEO } from "../components/SEO";
+export default function About() {
+  return (
+    <>
+      <SEO
+        title="About | surya Studio"
+        description="Meet the principles behind surya Studio: thoughtful strategy, distinctive design, and measurable delivery."
+        path="/project_1/about"
+      />
+      <section className="page-hero section-wrap">
+        <Reveal>
+          <p className="eyebrow">About / A little about us</p>
+          <h1>
+            Less noise.
+            <br />
+            <em>More meaning.</em>
+          </h1>
+          <p className="hero-intro">
+            surya Studio is a demo identity for a modern independent digital
+            partner. Make it yours with your real story, team, values, and
+            proof.
+          </p>
+        </Reveal>
+      </section>
+      <section className="section-wrap about-layout">
+        <Reveal>
+          <p className="eyebrow">What we believe</p>
+          <h2>
+            Digital should feel
+            <br />
+            human first.
+          </h2>
+        </Reveal>
+        <Reveal>
+          <p className="large-copy">
+            The best websites respect people’s time. They explain what matters,
+            work beautifully on every screen, and make the next step feel
+            natural.
+          </p>
+          <p>
+            We bring strategy, design, engineering, and measurement together so
+            that a website is not simply a launch-day deliverable. It becomes a
+            useful part of the business.
+          </p>
+        </Reveal>
+      </section>
+      <section className="statement-section">
+        <div className="section-wrap statement-inner">
+          <p className="eyebrow">Our working principles</p>
+          <h2>
+            Curiosity over assumptions.
+            <br />
+            <em>Craft over shortcuts.</em>
+          </h2>
+          <p className="large-copy">
+            Be clear about what is real. Build for accessibility and speed.
+            Measure outcomes. Keep learning after launch.
+          </p>
+        </div>
+      </section>
+      <section className="final-cta section-wrap">
+        <Reveal>
+          <h2>Ready to build something useful?</h2>
+          <Link to="/contact" className="button button-dark">
+            Start a conversation <ArrowUpRight />
+          </Link>
+        </Reveal>
+      </section>
+    </>
+  );
+}
