@@ -34,7 +34,7 @@ export default function Services() {
       <SEO
         title="Services | surya Studio"
         description="Website strategy, React development, 3D interactions, technical SEO and analytics foundations."
-        path="/services"
+        path="/project_1/services"
       />
       <section className="page-hero section-wrap">
         <Reveal>
@@ -83,7 +83,7 @@ export default function Services() {
       <section className="final-cta section-wrap">
         <Reveal>
           <h2>Have a project in mind?</h2>
-          <Link to="/contact" className="button button-dark">
+          <Link to="/project_1/contact" className="button button-dark">
             Let’s talk <ArrowUpRight />
           </Link>
         </Reveal>

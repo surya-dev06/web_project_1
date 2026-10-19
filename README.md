@@ -1,137 +1,138 @@
-# Northstar Studio: animated React + Vite starter
+# Surya Devs Project Suite
 
-A multi-page, responsive marketing-site starter using React, TypeScript, Vite, React Router, Motion, React Three Fiber, Supabase and Cloudflare Pages.
+A single React + Vite + TypeScript app for `https://suryadevs.in` with both projects under dedicated route prefixes:
 
-**Design read:** a premium independent digital studio for restaurants, agencies, consultants and startups, with restrained cinematic 3D, editorial spacing, porcelain/indigo/coral palette and high-intent conversion paths.
+- Project 1: `/project_1/`, `/project_1/services`, `/project_1/work`, `/project_1/about`, `/project_1/contact`, `/project_1/auth`, `/project_1/privacy`, `/project_1/terms`
+- Project 2: `/project_2/`, `/project_2/menu`, `/project_2/cart`, `/project_2/order/:orderId`, `/project_2/admin/login`, `/project_2/admin`
 
-**Design dials:** variance 8/10, motion 7/10, visual density 4/10. Motion communicates hierarchy and interaction; the site respects `prefers-reduced-motion`.
+Project 2 is a restaurant ordering demo called Plum & Plate. It includes a menu with categories/search/vegetarian filter, cart quantity controls, order placement, private-token order tracking, a Supabase Auth admin login, order status management, dish add/remove/availability, table overview and reports. It uses a dark purple, bright purple, lilac and white design system, food photography, 3D-like CSS depth, floating elements, hover transitions, and reduced-motion support.
 
-## Included routes and sections
+The restaurant name and food list are a demonstration identity/content set. The photography is remotely served by Unsplash URLs; replace these with licensed/self-hosted images before a production restaurant launch. No customer reviews or client claims are fabricated.
 
-- `/` Home: animated 3D hero, intro, service rows, image-led concept gallery, approach statement and CTA
-- `/services` services and delivery process
-- `/work` portfolio concept gallery
-- `/about` studio story and principles
-- `/contact` enquiry form, WhatsApp, email
-- `/auth` Supabase email/password sign-in and sign-up starter
-- `/privacy` privacy policy template
-- `/terms` terms template
-- catch-all 404 page
-- reusable navigation/footer, SEO metadata component, Google Analytics 4 loader
-- Supabase insert-only contact form and SQL schema
-
-## Important honesty / production notes
-
-- Images are real Unsplash-hosted photography, but the project tiles are **concept examples**, not verified client case studies. Replace with photos you own or are licensed to use, and do not claim the concept names as clients.
-- The Northstar name, email, phone, domain and legal wording are placeholders. Update before launch.
-- Client-side validation is for usability, not security. Add rate limiting / abuse controls and verify your Supabase RLS policies. Never expose a service-role key.
-- SPA meta tags are set client-side. For stronger SEO at scale, consider prerendering/static generation (e.g. Vite SSG) or SSR, and validate every route with Search Console.
-- No SEO tool can promise rankings. Semrush's full suite is a commercial service; Google Search Console and Bing Webmaster Tools have free webmaster features. Google Analytics is free, but analytics consent obligations vary by region.
-
-## 1. Install and run
+## 1. Local setup
 
 Use Node.js 20.19+ or 22.12+ for current Vite versions.
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
 
-On Windows PowerShell, use `Copy-Item .env.example .env.local`.
+Windows PowerShell:
 
-The site runs locally even without Supabase; the contact form will show a configuration error until environment variables are set.
+```powershell
+Copy-Item .env.example .env.local
+npm run dev
+```
 
-## 2. Supabase backend and authentication
+Open the local URL printed by Vite. The UI works in demo mode without Supabase; menu edits and real order persistence require Supabase.
+
+## 2. Supabase setup
 
 1. Create a project at https://supabase.com.
-2. In Project Settings / API, copy the Project URL and publishable/anon key to `.env.local`.
-3. Open SQL Editor and run `supabase/schema.sql`.
-4. Test one valid contact request and one invalid request. Verify the row appears in Table Editor.
-5. Keep RLS enabled. Do not add public `SELECT`, `UPDATE`, or `DELETE` policies for enquiries.
-6. Configure CAPTCHA/rate limiting before production.
+2. In Project Settings → API, copy the project URL and the publishable/anon key into `.env.local` as `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+3. In SQL Editor, run `project_2/supabase/schema.sql`.
+4. In Authentication → Users, create a staff account with email/password. If public sign-up is not needed, disable it in Authentication settings.
+5. Copy the new user's UUID from Authentication → Users. Run this SQL as project owner, replacing the example UUID:
 
-### Supabase Authentication starter
+```sql
+insert into public.admin_users (user_id)
+values ('REPLACE_WITH_AUTH_USER_UUID');
+```
 
-The `/auth` route demonstrates email/password sign-up and sign-in using Supabase Auth. In Supabase Dashboard → Authentication → URL Configuration, set the production Site URL and allowed redirect URLs. Configure email confirmation and SMTP for production. This starter does not create a staff dashboard or protect private routes. If you need a private staff inbox, build server-enforced role checks and staff-only RLS policies; never authorize staff solely based on a client-side flag or editable user metadata.
+6. In Authentication → URL Configuration, set Site URL to `https://suryadevs.in` and add redirect URLs needed by your deployed site. For this password-login flow, test sign-in on `/project_2/admin/login`.
+7. Restart Vite after changing `.env.local`.
 
-## 3. Images and motion
+**Admin password:** Supabase Auth owns password storage and verification. This project does not hardcode an admin password. The user must be explicitly added to `public.admin_users` to receive the admin role. Never expose a service-role key in browser code.
 
-- Replace image URLs in `src/pages/Home.tsx` and `src/pages/Work.tsx` with your licensed images, ideally WebP/AVIF served from your own domain or Cloudflare Images/R2.
-- 3D scene is in `src/components/Scene3D.tsx`.
-- Scroll reveal component is in `src/components/Reveal.tsx`.
-- CSS hover zoom and responsive rules are in `src/styles.css`.
-- Test on a real phone. 3D uses GPU; if low-power/mobile performance suffers, lazy-load the Canvas or render a static image fallback.
-- Respect reduced motion; don't animate every element constantly.
+### Security notes before using with a real restaurant
 
-## 4. Analytics, Search Console and SEO
+- The public order insert policy validates basic fields, but browser-sent prices are not trusted. In production, submit a cart of menu item IDs and quantities to a Supabase Edge Function, calculate prices server-side from the database, rate-limit requests, validate table/restaurant ownership, and return a short-lived order tracking token.
+- Customer tracking uses an order UUID plus a random tracking token. The RPC only returns status fields, not phone or notes. Keep the tracking token private.
+- Add CAPTCHA/rate limiting and spam monitoring to public order creation.
+- Admin menu/order operations are guarded by `public.is_restaurant_admin()` and RLS. Review SQL policies for your specific workflow.
+- The `project_2` demo mode stores the most recent sample order in sessionStorage; it is not real backend persistence.
 
-1. Create a GA4 property at https://analytics.google.com and add its `G-...` Measurement ID to `VITE_GA_ID`. The ID is issued by Google; you do not invent it.
-2. Verify your domain in https://search.google.com/search-console using DNS (recommended for a Domain property) or the HTML meta tag for a URL-prefix property. Google gives you the unique verification value; submit `/sitemap.xml` after verification.
-3. Add the site to https://www.bing.com/webmasters and submit the sitemap.
-4. Use https://pagespeed.web.dev/ and Lighthouse for Core Web Vitals; fix image weight, JavaScript, accessibility and layout shift.
-5. Semrush is a commercial SEO platform with some limited/free tools; it is not open-source. Create a project using your live domain and run Site Audit. Semrush does not provide a universal website tracking ID that this starter needs; do not add an invented `VITE_SEMRUSH_SITE_ID`. Follow the exact verification instructions shown in your Semrush project.
-6. Update the canonical URL, sitemap, robots file, Open Graph image and all titles/descriptions with the real production domain.
-7. Add schema.org JSON-LD for your real Organization/LocalBusiness details only when accurate. Avoid fabricated ratings, reviews, awards or client names.
-8. If you use analytics or marketing cookies, publish a consent mechanism and privacy disclosure appropriate to your visitors and applicable laws.
+## 3. Architecture and page files
 
-## 5. Deploy to Cloudflare Pages
+```text
+src/
+  App.tsx                       # Routes both projects
+  main.tsx
+  pages/                        # Project 1 pages, one TSX per page
+  components/                   # Project 1 shared components
+project_2/src/
+  RestaurantApp.tsx
+  types.ts
+  data/menu.ts
+  lib/supabase.ts
+  components/RestaurantLayout.tsx
+  pages/RestaurantHome.tsx
+  pages/MenuPage.tsx
+  pages/CartPage.tsx
+  pages/OrderStatusPage.tsx
+  pages/admin/AdminLogin.tsx
+  pages/admin/AdminDashboard.tsx
+  restaurant.css
+project_2/supabase/schema.sql
+```
 
-### Git-connected deployment (recommended)
-1. Push this folder to a GitHub repository.
-2. In Cloudflare Dashboard, open Workers & Pages → Create → Pages → Connect to Git.
-3. Choose the repository.
-4. Build command: `npm run build`
-5. Build output directory: `dist`
-6. Add production environment variables under Settings → Environment variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SITE_URL`, `VITE_GA_ID`, `VITE_WHATSAPP_NUMBER`.
-7. Deploy, test every route and form, then attach your custom domain.
-8. `public/_redirects` contains the SPA fallback. Check it after deployment.
+The root Vite app is the production build for both projects. The `project_1/` folder retains your original project source snapshot for reference; make production edits in root `src/` and `project_2/src/` so both routes are part of the same deployment.
 
-Cloudflare Pages is suitable for the static React frontend. Supabase remains the managed backend. For edge-side validation/rate limits, add a Cloudflare Worker or Supabase Edge Function.
+## 4. GitHub
 
-## 6. Endpoint and release test checklist
-
-- [ ] `/`, `/services`, `/work`, `/about`, `/contact`, `/privacy`, `/terms` load directly and after refresh
-- [ ] unknown route shows 404
-- [ ] contact: empty fields blocked, malformed email blocked, message under 10 chars blocked, consent required
-- [ ] valid submission inserts one row; success message appears; no duplicate row on one submit
-- [ ] simulate Supabase offline/wrong key and confirm error message is visible
-- [ ] RLS prevents public reading of contact submissions
-- [ ] WhatsApp opens with expected number/message; email link uses real inbox
-- [ ] keyboard focus, labels, mobile menu, contrast and reduced motion tested
-- [ ] `npm run build` succeeds and `dist/` is produced
-- [ ] production domain, canonical tags, robots and sitemap updated
-- [ ] GA4 Realtime receives page/event data after consent rules are met
-- [ ] Search Console ownership verified and sitemap accepted
-- [ ] Lighthouse: mobile performance, accessibility, best practices, SEO reviewed
-- [ ] privacy/terms reviewed by a qualified professional for the actual business
-
-## 7. Recommended follow-up enhancements
-
-- Staff-only enquiry inbox using Supabase Auth and server-verified admin permissions
-- Turnstile/CAPTCHA plus rate limiting
-- transactional email via a provider or Supabase Edge Function (never expose API secrets in the client)
-- real case studies and client approvals
-- static prerendering for per-route HTML metadata
-- error monitoring and analytics consent manager
-
-
-## Bright theme and scroll controls
-
-The CSS now uses a light porcelain background, ink text, electric indigo primary accent, and warm coral hover accent. `src/components/ScrollToTop.tsx` smoothly scrolls to the page top on route changes and provides a floating back-to-top button after scrolling. The contact form captures its form element before awaiting Supabase, fixing the `Cannot read properties of null (reading 'reset')` error; network exceptions now show a user-facing error.
-
-## Push to GitHub
-
-1. Create a new **empty** repository on GitHub (do not initialize it with a README).
-2. In a terminal at the project root run:
+Before committing, ensure `.env.local` is not tracked. `.gitignore` excludes `.env*` except `.env.example`.
 
 ```bash
 git init
 git add .
-git commit -m "Build responsive animated business website"
+git status
+git commit -m "Build Surya Devs project suite"
 git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git
 git push -u origin main
 ```
 
-Replace the URL with your repository URL. Ensure `.env.local` is ignored by Git and never commit secret keys. The included `.env.example` contains placeholders only.
+If your existing repository already has a remote and commit history, use its existing clone and merge/copy these files there instead of running `git init` over it. Never commit the `.git` directory from an uploaded archive or any real secret values.
+
+## 5. Cloudflare Pages deployment
+
+1. Push the project to GitHub.
+2. Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git.
+3. Select the repository and set:
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Root directory: `/` (repository root)
+4. Add environment variables in Cloudflare Pages settings for Production and Preview:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_SITE_URL=https://suryadevs.in`
+   - Optional: `VITE_GA_ID`
+5. Deploy. Open and refresh both `/project_1/` and `/project_2/menu` to test SPA routing.
+6. In Cloudflare Pages → Custom domains, attach `suryadevs.in`. If DNS is managed elsewhere, follow Cloudflare's provided DNS instructions. Preserve any existing DNS/email records.
+7. Test the production site, Supabase login, ordering, menu edits, and RLS behavior.
+
+The included `public/_redirects` provides SPA fallback routing. Cloudflare's Git deployment can automatically rebuild on pushes to the configured branch.
+
+## 6. SEO and Google Search Console
+
+- Canonical domain, base title/description, robots.txt and sitemap.xml are set to `https://suryadevs.in`. Check the final canonical and metadata for every important route before launch.
+- Single-page app metadata is updated client-side in some Project 1 pages. For the strongest SEO, prerender public marketing/menu routes so each route ships its own title, description and structured data in initial HTML. Do not add private admin/cart/order routes to the sitemap.
+- In https://search.google.com/search-console, add a **Domain property** for `suryadevs.in`, verify it using the DNS TXT record Google gives you, then submit `https://suryadevs.in/sitemap.xml`.
+- Keep the sitemap limited to canonical, indexable public pages. Remove `/project_2/admin/*`, `/project_2/cart` and private order URLs from the sitemap.
+- Use unique page titles/descriptions, meaningful image alt text, compressed WebP/AVIF images, one clear H1 per page, internal links and Organization/Person structured data only when accurate.
+- Add Google Analytics only if you want it and have a real `VITE_GA_ID`; do not invent a measurement ID. Respect applicable privacy/consent requirements.
+- Search Console confirms crawl/indexing data, not guaranteed ranking.
+
+## 7. Pre-launch test checklist
+
+- [ ] `npm run build` succeeds
+- [ ] Direct load and refresh on `/project_1/`, `/project_1/work`, `/project_2/`, `/project_2/menu`, `/project_2/cart`
+- [ ] Customer can filter/search dishes and update cart quantities
+- [ ] Supabase insert creates an order and token RPC returns its status
+- [ ] A non-admin Auth user is rejected from the dashboard
+- [ ] Admin can update order statuses, add a dish, hide/show a dish and remove a dish
+- [ ] RLS prevents anonymous access to admin data and full order rows
+- [ ] Mobile layout, keyboard focus and reduced-motion settings are tested
+- [ ] Search Console sitemap is submitted and the canonical domain resolves over HTTPS

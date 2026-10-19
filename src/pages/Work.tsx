@@ -27,7 +27,7 @@ export default function Work() {
       <SEO
         title="Selected work | surya Studio"
         description="Explore illustrative website concepts for hospitality, architecture and consulting businesses."
-        path="/work"
+        path="/project_1/work"
       />
       <section className="page-hero section-wrap">
         <Reveal>

@@ -64,7 +64,7 @@ export default function About() {
       <section className="final-cta section-wrap">
         <Reveal>
           <h2>Ready to build something useful?</h2>
-          <Link to="/contact" className="button button-dark">
+          <Link to="/project_1/contact" className="button button-dark">
             Start a conversation <ArrowUpRight />
           </Link>
         </Reveal>

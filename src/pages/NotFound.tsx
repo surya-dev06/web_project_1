@@ -16,7 +16,7 @@ export default function NotFound() {
       <p className="hero-intro">
         The link may be outdated, or the page may have moved.
       </p>
-      <Link to="/" className="button button-dark">
+      <Link to="/project_1/" className="button button-dark">
         Back to home ↗
       </Link>
     </section>

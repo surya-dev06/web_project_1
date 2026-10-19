@@ -9,7 +9,7 @@ export default function Contact() {
       <SEO
         title="Contact | surya Studio"
         description="Tell surya Studio about your website, design, 3D or SEO project."
-        path="/contact"
+        path="/project_1/contact"
       />
       <section className="page-hero section-wrap">
         <Reveal>

@@ -3,10 +3,10 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 import ScrollToTop from "./ScrollToTop";
 const nav = [
-  ["Services", "project_1/services"],
-  ["Selected work", "project_1/work"],
-  ["About", "project_1/about"],
-  ["Contact", "project_1/contact"],
+  ["Services", "/project_1/services"],
+  ["Selected work", "/project_1/work"],
+  ["About", "/project_1/about"],
+  ["Contact", "/project_1/contact"],
 ];
 export function Layout() {
   const [open, setOpen] = useState(false);
