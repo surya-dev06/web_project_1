@@ -19,7 +19,7 @@ export default function RestaurantLayout() {
             Overview
           </NavLink>
           <NavLink to="/project_2/menu">Menu</NavLink>
-          <a href="/project_2/#how-it-works">How it works</a>
+          <Link to={{ pathname: "/project_2/", hash: "#how-it-works" }}>How it works</Link>
         </nav>
         <div className="r-header-actions">
           {/* <Link className="r-admin-link" to="/project_2/admin">
