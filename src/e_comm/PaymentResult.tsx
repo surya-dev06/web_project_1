@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { CircleCheck, CircleX } from "lucide-react";
 
 export function PaymentSuccess() {
@@ -16,11 +16,13 @@ export function PaymentSuccess() {
   );
 }
 export function PaymentFailed() {
+  const reason = (useLocation().state as { reason?: string } | null)?.reason;
   return (
     <main className="ec-shell ec-page ec-result ec-fade">
       <CircleX size={64} className="ec-result-bad" />
       <h1 className="ec-page-title">Payment <em>not completed.</em></h1>
-      <p>No money was taken, or any amount debited will be refunded by your bank within 5–7 working days. Your items are back in your bag.</p>
+      {reason && <p><strong>{reason}</strong></p>}
+      <p>If any amount was debited, your order is confirmed automatically or the money is refunded by your bank within 5–7 working days. Your items are back in your bag.</p>
       <div className="ec-result-actions">
         <Link className="ec-button ec-button-dark" to="/e_comm/checkout">Try again</Link>
         <Link className="ec-button" to="/e_comm/cart">Back to bag</Link>

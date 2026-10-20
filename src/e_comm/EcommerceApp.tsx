@@ -47,6 +47,7 @@ import { PaymentFailed, PaymentSuccess } from "./PaymentResult";
 import { StorePrivacy, StoreTerms } from "./Legal";
 import AdminPanel from "./AdminPanel";
 import { NovaHome, NovaShell } from "./Nova";
+import "./responsive.css";
 
 const money = (value: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -1003,40 +1004,54 @@ function CheckoutPage({
       p_shipping_address: address,
       p_items: cart.map((i) => ({ product_id: i.id, quantity: i.quantity })),
     });
-    setBusy(false);
+    // setBusy(false);
     if (error) {
+      setBusy(false);
       setError(error.message);
       return;
     }
     const row = Array.isArray(data) ? data[0] : data;
     const orderId = row?.order_id || row?.id;
     if (!orderId) {
+      setBusy(false);
       setError(
         "The order was not returned by the server. Please check your order history before retrying.",
       );
       return;
     }
     const orderNumber = row?.order_number || "";
+    // busy stays true until the payment window is finished (prevents duplicate orders)
     try {
       await payForOrder(
         orderId,
         { name, phone, email: session?.user.email },
-        async (ok) => {
+        async (ok, reason) => {
++         setBusy(false);
           if (ok) {
             clearCart();
             notify("Payment successful");
             try { await client.functions.invoke("order-notification", { body: { order_id: orderId } }); } catch { /* email is best-effort */ }
             navigate(`/e_comm/payment/success?order=${encodeURIComponent(orderNumber)}`, { replace: true });
           } else {
-            navigate("/e_comm/payment/failed", { replace: true });
+            // navigate("/e_comm/payment/failed", { replace: true });
+            navigate("/e_comm/payment/failed", { replace: true, state: { reason } });
           }
         },
       );
     } catch (err) {
+      setBusy(false);
       const msg = err instanceof Error ? err.message : "Payment could not start.";
       setError(msg);
       notify(msg, "error");
-      await client.functions.invoke("razorpay-verify", { body: { order_id: orderId, failed: true } });
+      // await client.functions.invoke("razorpay-verify", { body: { order_id: orderId, failed: true } });
+      // The order was created but payment never opened: release the reserved stock.
+      try {
+        await client.functions.invoke("razorpay-verify", {
+          body: { order_id: orderId, action: "cancel" },
+        });
+      } catch {
+        /* ignore */
+      }
     }
   }
   return (
