@@ -9,13 +9,16 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import { Privacy, Terms } from "./pages/Legal";
 import RestaurantApp from "../project_2/src/RestaurantApp";
+import EcommerceApp from "./e_comm/EcommerceApp";
+
 export default function App() {
- return <Routes>
-  <Route path="/" element={<Navigate to="/project_1/" replace />} />
-  <Route path="/project_1" element={<Layout/>}>
-   <Route index element={<Home/>}/><Route path="services" element={<Services/>}/><Route path="work" element={<Work/>}/><Route path="about" element={<About/>}/><Route path="contact" element={<Contact/>}/><Route path="auth" element={<Auth/>}/><Route path="privacy" element={<Privacy/>}/><Route path="terms" element={<Terms/>}/>
-  </Route>
-  <Route path="/project_2/*" element={<RestaurantApp/>}/>
-  <Route path="*" element={<NotFound/>}/>
- </Routes>;
+  return <Routes>
+    <Route path="/" element={<Navigate to="/project_1/" replace />} />
+    <Route path="/project_1" element={<Layout />}>
+      <Route index element={<Home />} /><Route path="services" element={<Services />} /><Route path="work" element={<Work />} /><Route path="about" element={<About />} /><Route path="contact" element={<Contact />} /><Route path="auth" element={<Auth />} /><Route path="privacy" element={<Privacy />} /><Route path="terms" element={<Terms />} />
+    </Route>
+    <Route path="/project_2/*" element={<RestaurantApp />} />
+    <Route path="/e_comm/*" element={<EcommerceApp />} />
+    <Route path="*" element={<NotFound />} />
+  </Routes>;
 }

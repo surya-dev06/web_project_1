@@ -136,3 +136,61 @@ The included `public/_redirects` provides SPA fallback routing. Cloudflare's Git
 - [ ] RLS prevents anonymous access to admin data and full order rows
 - [ ] Mobile layout, keyboard focus and reduced-motion settings are tested
 - [ ] Search Console sitemap is submitted and the canonical domain resolves over HTTPS
+
+---
+
+## Project 3: E-commerce store (`/e_comm/`)
+
+The store has its own Supabase client (`src/lib/supabase-ecommerce.ts`) and its own auth storage key (`ecommerce-auth`). It does **not** reuse the existing portfolio client. Keep the original `src/lib/supabase.ts` and the restaurant app's existing files intact.
+
+### Routes
+
+- `/e_comm/` — collection, product search, category filters, sorting, product cards
+- `/e_comm/product/:slug` — product details
+- `/e_comm/cart` — editable cart saved in this browser
+- `/e_comm/checkout` — authenticated order placement
+- `/e_comm/account` — sign in / sign up using the new store project's Auth
+- `/e_comm/orders` — signed-in customer's orders
+- `/e_comm/admin` — store-admin order dashboard and status updates
+
+### Setup the separate store database
+
+1. Create a **new Supabase project** for the store. Do not reuse the portfolio/restaurant project if you want separate users and data.
+2. Open that new project's **SQL Editor** and run `supabase/ecommerce-schema.sql` in full. It only creates `ecommerce_*` objects and does not drop your existing tables.
+3. Copy the new project's Project URL and publishable/anon browser key into `.env.local` using `VITE_ECOM_SUPABASE_URL` and `VITE_ECOM_SUPABASE_ANON_KEY`. Keep `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` set to their existing values. Never put a `service_role` key in a `VITE_` variable.
+4. Restart the dev server after changing environment variables.
+5. Create your own store account from `/e_comm/account`. In the new Supabase project's **Authentication → Users**, copy that user's UUID. Run the following in the new store project's SQL Editor, replacing the UUID:
+
+   ```sql
+   insert into public.ecommerce_admins(user_id)
+   values ('YOUR_AUTH_USER_UUID'::uuid)
+   on conflict (user_id) do nothing;
+   ```
+
+6. Replace the demo product data and Unsplash sample photos with your own product content and licensed images. The product table supports `image_avif`, `image_svg`, and `image_jpg`. The browser's `<picture>` element chooses the first supported source; the browser does not download all three versions just because all are configured.
+7. Run `npm install`, then `npm run dev`. Test `/project_1/`, `/project_2/`, and `/e_comm/`.
+
+### Email notifications (optional)
+
+The order notification Edge Function sends a confirmation email through Resend. The checkout records the order but does **not** collect payment. Configure a verified sender/domain with Resend before enabling real email notifications.
+
+1. Install the Supabase CLI and sign in: `npx supabase login`.
+2. Link the CLI to the new store project: `npx supabase link --project-ref YOUR_ECOM_PROJECT_REF`.
+3. Set secrets on the linked project (replace every example value):
+
+   ```bash
+   npx supabase secrets set RESEND_API_KEY=re_your_secret ORDER_FROM_EMAIL=orders@your-verified-domain.com ALLOWED_ORIGIN=https://your-real-domain.example
+   ```
+
+   `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are provided to Edge Functions by Supabase. Never expose the service-role key in frontend code or `.env.local`.
+4. Deploy the function: `npx supabase functions deploy order-notification`.
+
+If you do not configure Resend, order placement still works; the optional notification call can return a configuration error. For production, add payment-provider integration and verify payment status server-side before marking orders as paid or fulfilling them. The included checkout intentionally does not claim that a payment has been processed.
+
+### Images, responsiveness, animation and SEO
+
+The store stylesheet is `src/e_comm/ecommerce.css`; it includes mobile/tablet/desktop layouts, reduced-motion support, hover transitions, reveal effects and the purple/white/black palette. Product imagery uses AVIF → SVG → JPEG source fallbacks where URLs are provided. The SEO files retain the existing `suryadevs.in` domain; update `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the deployment domain differs. This is a client-rendered Vite app; per-product server-rendered SEO metadata would require prerendering or SSR.
+
+### Separate Supabase databases
+
+Supabase projects cannot share one SQL database by simply combining schema files. Keep the existing `supabase/schema.sql` and `project_2/supabase/schema.sql` for their existing apps, and run `supabase/ecommerce-schema.sql` only against the new store project. A SQL file in this repository can contain instructions for all projects, but each project's schema must be applied to that project's own database.

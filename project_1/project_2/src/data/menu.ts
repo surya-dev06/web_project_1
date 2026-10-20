@@ -1,0 +1,11 @@
+import type { MenuItem } from "../types";
+export const demoMenu: MenuItem[] = [
+ {id:"dish-1",name:"Truffle Parmesan Fries",description:"Crispy fries, parmesan snow, truffle aioli",category:"Starters",price:249,image_url:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:true},
+ {id:"dish-2",name:"Burrata Garden Salad",description:"Creamy burrata, heirloom tomatoes, basil oil",category:"Starters",price:389,image_url:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:false},
+ {id:"dish-3",name:"Smoky Paneer Tikka",description:"Charred paneer, mint chutney, pickled onion",category:"Mains",price:349,image_url:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:true},
+ {id:"dish-4",name:"Creamy Tuscan Pasta",description:"Silky tomato cream, roasted garlic, herbs",category:"Mains",price:429,image_url:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:true},
+ {id:"dish-5",name:"Smash Burger",description:"Double smash patty, cheddar, house sauce",category:"Mains",price:459,image_url:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:false,is_featured:false},
+ {id:"dish-6",name:"Wood-fired Margherita",description:"Mozzarella, tomato, basil, olive oil",category:"Mains",price:399,image_url:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:false},
+ {id:"dish-7",name:"Pistachio Cheesecake",description:"Vanilla cheesecake, pistachio crumb",category:"Desserts",price:279,image_url:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:true},
+ {id:"dish-8",name:"Berry Lemonade",description:"Fresh berries, lemon, sparkling water",category:"Drinks",price:169,image_url:"https://images.unsplash.com/photo-1513558161293-cw2c7c1a0a9e?auto=format&fit=crop&w=900&q=85",is_available:true,is_vegetarian:true,is_featured:false}
+];

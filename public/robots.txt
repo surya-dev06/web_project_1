@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /e_comm/cart
+Disallow: /e_comm/checkout
+Disallow: /e_comm/account
+Disallow: /e_comm/orders
+Disallow: /e_comm/admin
 Sitemap: https://suryadevs.in/sitemap.xml
