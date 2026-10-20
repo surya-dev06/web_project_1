@@ -39,6 +39,14 @@ import {
 } from "../lib/supabase-ecommerce";
 import type { CartItem, OrderSummary, Product } from "./types";
 import "./ecommerce.css";
+import "./ecommerce-extra.css";
+import { ToastHost, notify } from "./notify";
+import { ThemeToggle, useTheme } from "./theme";
+import { payForOrder } from "./payment";
+import { PaymentFailed, PaymentSuccess } from "./PaymentResult";
+import { StorePrivacy, StoreTerms } from "./Legal";
+import AdminPanel from "./AdminPanel";
+import { NovaHome, NovaShell } from "./Nova";
 
 const money = (value: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -986,6 +994,7 @@ function CheckoutPage({
   async function placeOrder(e: React.FormEvent) {
     e.preventDefault();
     if (!db) return;
+    const client = db;
     setBusy(true);
     setError("");
     const { data, error } = await db.rpc("create_ecommerce_order", {
@@ -1007,15 +1016,28 @@ function CheckoutPage({
       );
       return;
     }
-    clearCart(); // Best-effort notification only; order placement does not depend on email.
+    const orderNumber = row?.order_number || "";
     try {
-      await db.functions.invoke("order-notification", {
-        body: { order_id: orderId },
-      });
-    } catch {
-      /* order remains created even if email service is unavailable */
+      await payForOrder(
+        orderId,
+        { name, phone, email: session?.user.email },
+        async (ok) => {
+          if (ok) {
+            clearCart();
+            notify("Payment successful");
+            try { await client.functions.invoke("order-notification", { body: { order_id: orderId } }); } catch { /* email is best-effort */ }
+            navigate(`/e_comm/payment/success?order=${encodeURIComponent(orderNumber)}`, { replace: true });
+          } else {
+            navigate("/e_comm/payment/failed", { replace: true });
+          }
+        },
+      );
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Payment could not start.";
+      setError(msg);
+      notify(msg, "error");
+      await client.functions.invoke("razorpay-verify", { body: { order_id: orderId, failed: true } });
     }
-    navigate("/e_comm/orders", { replace: true });
   }
   return (
     <main className="ec-shell ec-page">
@@ -1065,11 +1087,11 @@ function CheckoutPage({
           <div className="ec-checkout-notice">
             <CreditCard size={18} />
             <span>
-              <strong>Payment note</strong>
+              <strong>Secure payment by Razorpay</strong>
               <small>
-                This version records an order but does not charge a payment
-                method. Connect a payment provider before accepting live
-                payments.
+                Pay with UPI, cards, net banking or wallets. By paying you
+                accept our <Link to="/e_comm/terms">Terms</Link> and{" "}
+                <Link to="/e_comm/privacy">Privacy Policy</Link>.
               </small>
             </span>
           </div>
@@ -1081,7 +1103,7 @@ function CheckoutPage({
               <LoaderCircle className="ec-spin" />
             ) : (
               <>
-                Place order · {money(subtotal + shipping)}{" "}
+                Pay {money(subtotal + shipping)}{" "}
                 <ArrowRight size={17} />
               </>
             )}
@@ -1360,26 +1382,14 @@ export default function EcommerceApp() {
   );
   const clearCart = useCallback(() => setCart([]), []);
   const navigate = useNavigate();
-  return (
-    <div className="ec-app">
-      <ScrollToTop />
-      <StoreHeader
-        cartCount={cart.reduce((s, i) => s + i.quantity, 0)}
-        session={session}
-        onSignOut={onSignOut}
-      />
-      {!isEcommerceConfigured && (
-        <div className="ec-config-banner">
-          Preview mode: connect your separate e-commerce Supabase project in{" "}
-          <code>.env.local</code> to enable sign-in, live products, orders and
-          admin features.
-        </div>
-      )}
+  const [theme, toggleTheme] = useTheme();
+  const inAdmin = useLocation().pathname.startsWith("/e_comm/admin");
+  const routes = (
       <Routes>
         <Route
           index
           element={
-            <StoreHome
+            <NovaHome
               products={products}
               onAdd={addToCart}
               loading={loading}
@@ -1419,29 +1429,29 @@ export default function EcommerceApp() {
           }
         />
         <Route path="orders" element={<OrdersPage session={session} />} />
-        <Route path="admin" element={<AdminPage session={session} />} />
+        <Route path="admin" element={<AdminPanel session={session} theme={theme} toggleTheme={toggleTheme} />} />
+        <Route path="payment/success" element={<PaymentSuccess />} />
+        <Route path="payment/failed" element={<PaymentFailed />} />
+        <Route path="terms" element={<StoreTerms />} />
+        <Route path="privacy" element={<StorePrivacy />} />
         <Route path="*" element={<Navigate to="/e_comm/" replace />} />
       </Routes>
-      <footer className="ec-footer">
-        <div className="ec-shell ec-footer-inner">
-          <Link className="ec-brand" to="/e_comm/">
-            <span className="ec-brand-mark">s.</span>
-            <span>
-              studio<span className="ec-brand-light">/store</span>
-            </span>
-          </Link>
-          <p>Good things for everyday living.</p>
-          <div>
-            <Link to="/e_comm/">Shop</Link>
-            <Link to="/e_comm/account">Account</Link>
-            <Link to="/e_comm/orders">Orders</Link>
-            <Link to="/e_comm/admin">Admin</Link>
-          </div>
-          <small>
-            © {new Date().getFullYear()} Studio / Store. Demo storefront.
-          </small>
+  );
+  return (
+    <div className="ec-app" data-theme={theme}>
+      <ToastHost />
+      <ScrollToTop />
+      {!inAdmin && !isEcommerceConfigured && (
+        <div className="ec-config-banner">
+          Preview mode: connect your separate e-commerce Supabase project in{" "}
+          <code>.env.local</code> to enable sign-in, live products, orders and
+          admin features.
         </div>
-      </footer>
+      )}
+      {inAdmin ? routes : (
+        <NovaShell cart={cart} products={products} session={session} onSignOut={onSignOut} onAdd={addToCart} setQuantity={setQuantity} remove={remove} theme={theme} toggleTheme={toggleTheme}>{routes}</NovaShell>
+      )}
+
       {toast && (
         <div className="ec-toast" role="status">
           <Check size={17} />

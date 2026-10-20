@@ -1,0 +1,480 @@
+/* Dark theme: swaps the variables the store already uses. */
+.ec-app[data-theme="dark"] {
+    --ec-ink: #f1ecf7;
+    --ec-muted: #a79fb3;
+    --ec-paper: #141119;
+    --ec-white: #1d1824;
+    --ec-lilac: #2a2236;
+    --ec-line: #332b3f;
+    --ec-purple: #a283e6;
+    --ec-shadow: 0 22px 70px rgba(0, 0, 0, .45)
+}
+
+.ec-app[data-theme="dark"] .ec-header {
+    background: rgba(20, 17, 25, .94)
+}
+
+.ec-app {
+    transition: background .3s, color .3s
+}
+
+.ec-app .ec-muted {
+    color: var(--ec-muted)
+}
+
+.ec-fade {
+    animation: ecFade .5s ease both
+}
+
+@keyframes ecFade {
+    from {
+        opacity: 0;
+        transform: translateY(12px)
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+.ec-theme-toggle {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--ec-line);
+    background: var(--ec-white);
+    color: var(--ec-ink);
+    display: grid;
+    place-items: center;
+    transition: transform .25s, background .25s
+}
+
+.ec-theme-toggle:hover {
+    transform: rotate(18deg) scale(1.08)
+}
+
+.ec-app .ec-button {
+    transition: transform .2s, box-shadow .2s, background .2s
+}
+
+.ec-app .ec-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(116, 82, 184, .28)
+}
+
+.ec-button-danger {
+    background: #c0392b;
+    color: #fff;
+    border: 0
+}
+
+/* popups */
+.ec-toasts {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+    display: grid;
+    gap: 10px
+}
+
+.ec-pop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: #fff;
+    box-shadow: var(--ec-shadow);
+    animation: ecPop .35s cubic-bezier(.2, .9, .3, 1.2) both;
+    max-width: 360px
+}
+
+.ec-pop-ok {
+    background: #2f6b4f
+}
+
+.ec-pop-error {
+    background: #a8322a
+}
+
+.ec-pop button {
+    background: none;
+    border: 0;
+    color: inherit;
+    opacity: .7
+}
+
+@keyframes ecPop {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(.95)
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+/* result + legal */
+.ec-result {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    padding-block: 80px
+}
+
+.ec-result-ok {
+    color: #2f8f62
+}
+
+.ec-result-bad {
+    color: #c0392b
+}
+
+.ec-result-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center
+}
+
+.ec-legal {
+    max-width: 820px
+}
+
+.ec-legal h2 {
+    font-size: 18px;
+    margin: 28px 0 6px
+}
+
+/* admin */
+.ec-admin {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    min-height: 100vh
+}
+
+.ec-admin-side {
+    background: var(--ec-purple-dark);
+    color: #f5efff;
+    padding: 22px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: sticky;
+    top: 0;
+    height: 100vh
+}
+
+.ec-admin-brand {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 6px 10px 18px
+}
+
+.ec-admin-side button {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: none;
+    border: 0;
+    color: inherit;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-align: left;
+    opacity: .75;
+    transition: .2s
+}
+
+.ec-admin-side button:hover,
+.ec-admin-side button.on {
+    background: rgba(255, 255, 255, .12);
+    opacity: 1
+}
+
+.ec-admin-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px
+}
+
+.ec-admin-main {
+    padding: 30px 34px;
+    min-width: 0
+}
+
+.ec-admin-main h1 {
+    font-size: 26px;
+    margin: 0 0 18px
+}
+
+.ec-admin-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px
+}
+
+.ec-admin-head h1 {
+    margin: 0;
+    flex: 1
+}
+
+.ec-admin input,
+.ec-admin select,
+.ec-admin textarea {
+    background: var(--ec-white);
+    color: var(--ec-ink);
+    border: 1px solid var(--ec-line);
+    border-radius: 10px;
+    padding: 9px 12px;
+    width: 100%
+}
+
+.ec-admin-head input {
+    width: 220px
+}
+
+.ec-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px
+}
+
+.ec-stat {
+    background: var(--ec-white);
+    border: 1px solid var(--ec-line);
+    border-radius: 16px;
+    padding: 18px;
+    transition: transform .2s
+}
+
+.ec-stat:hover {
+    transform: translateY(-3px)
+}
+
+.ec-stat small {
+    color: var(--ec-muted)
+}
+
+.ec-stat strong {
+    display: block;
+    font-size: 26px
+}
+
+.ec-table-wrap {
+    overflow-x: auto;
+    background: var(--ec-white);
+    border: 1px solid var(--ec-line);
+    border-radius: 16px
+}
+
+.ec-table {
+    width: 100%;
+    border-collapse: collapse
+}
+
+.ec-table th,
+.ec-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--ec-line);
+    vertical-align: middle
+}
+
+.ec-table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ec-muted)
+}
+
+.ec-table tr:hover td {
+    background: var(--ec-lilac)
+}
+
+.ec-thumb {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover
+}
+
+.ec-low {
+    color: #c0392b;
+    font-weight: 700
+}
+
+.ec-chip {
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--ec-lilac);
+    font-size: 12px
+}
+
+.ec-chip.ok {
+    background: #d9f0e4;
+    color: #1f6b45
+}
+
+.ec-chip.bad {
+    background: #f8d9d5;
+    color: #a8322a
+}
+
+.ec-row-actions {
+    white-space: nowrap
+}
+
+.ec-row-actions button {
+    background: none;
+    border: 1px solid var(--ec-line);
+    color: var(--ec-ink);
+    border-radius: 8px;
+    padding: 6px;
+    margin-left: 6px;
+    transition: .2s
+}
+
+.ec-row-actions button:hover {
+    background: var(--ec-purple);
+    color: #fff
+}
+
+.ec-modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 6, 16, .55);
+    backdrop-filter: blur(3px);
+    display: grid;
+    place-items: center;
+    z-index: 90;
+    padding: 16px;
+    animation: ecFade .2s both
+}
+
+.ec-modal {
+    background: var(--ec-paper);
+    color: var(--ec-ink);
+    border-radius: 20px;
+    padding: 24px;
+    width: min(640px, 100%);
+    max-height: 92vh;
+    overflow: auto;
+    animation: ecPop .3s both
+}
+
+.ec-modal-sm {
+    width: min(420px, 100%)
+}
+
+.ec-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.ec-modal-head button {
+    background: none;
+    border: 0;
+    color: inherit
+}
+
+.ec-modal h2 {
+    margin: 0 0 10px
+}
+
+.ec-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px
+}
+
+.ec-form-grid label {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--ec-muted)
+}
+
+.ec-span2 {
+    grid-column: span 2
+}
+
+.ec-check {
+    display: flex !important;
+    align-items: center;
+    gap: 8px
+}
+
+.ec-check input {
+    width: auto !important
+}
+
+.ec-upload {
+    border: 1.5px dashed var(--ec-line);
+    border-radius: 12px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    align-self: end;
+    padding: 10px
+}
+
+.ec-upload:hover {
+    border-color: var(--ec-purple)
+}
+
+.ec-modal-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px
+}
+
+@media(max-width:800px) {
+    .ec-admin {
+        grid-template-columns: 1fr
+    }
+
+    .ec-admin-side {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap
+    }
+
+    .ec-admin-foot {
+        margin: 0 0 0 auto
+    }
+
+    .ec-form-grid {
+        grid-template-columns: 1fr
+    }
+
+    .ec-span2 {
+        grid-column: auto
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+    .ec-fade,
+    .ec-pop,
+    .ec-modal,
+    .ec-modal-bg {
+        animation: none
+    }
+}
